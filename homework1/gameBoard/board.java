@@ -20,7 +20,7 @@ public class board {
             Layer = new block[length];
         }
         public void setIcon(int x,int type){Layer[x] = new block(type);}
-        public void place(int x){Layer[x].isPlaced = false;}
+        public void place(int x){Layer[x].isPlaced = true;}
         public boolean ifPlaced(int x){return Layer[x].isPlaced;}
         public int getIcon(int x){return Layer[x].iconType;}
     }
@@ -44,7 +44,9 @@ public class board {
     }
     public boolean getStatus(int x, int y){return Board[y].ifPlaced(x);}
     public int getIcon(int x, int y){return Board[y].getIcon(x);}
-
+    public int getIconInfo(int icon){
+        return iconInfo[icon];
+    }
     /**
      * @param layoutInfo
      * consume an int array, which represent the length of each layer (layoutInfo[layer1, layer2, ...]) and initialize the board
@@ -74,17 +76,21 @@ public class board {
     }
     public boolean isPlayerTurn(){return playerTurn;}
     public int getWin(){
-        if(totalNum == 0){
+        System.out.println("total icon: " + totalNum);
+        if(totalNum == 0){//if previous player take the last step
             if(playerTurn){
-                return 0;
-            }else{
                 return 1;
+            }else{
+                return 0;
             }
-        }else{
+        }else{//the game should go ahead
             return -1;
         }
     }
-
+    public void place(int x, int y){
+        Board[y].place(x);
+        totalNum --;
+    }
     private String boardToString(){
         int x = 0;
         int y = 0;

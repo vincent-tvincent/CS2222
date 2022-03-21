@@ -1,6 +1,7 @@
 package test;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import gameBoard.board;
 public class test {
     @Test
@@ -31,5 +32,37 @@ public class test {
         assumeTrue(testResult);
     }
 
+    @Test
+    public void testPlace(){
+        int[] iconInfo = {1};
+        int[] iconTypeInfo = {1};
+        board testObject = new board(true,iconInfo);
+        testObject.createBoard(iconTypeInfo);
+        testObject.place(0,0);
+        assumeTrue(testObject.getStatus(0,0));
+    }
+
+    @Test
+    public void testGetWin(){
+        int[] iconInfo1 = {1};
+        int[] iconTypeInfo1 = {1};
+        int[] iconInfo2 = {1,1};
+        int[] iconTypeInfo2 = {2};
+        board testObject1 = new board(true,iconInfo1);
+        board testObject2 = new board(false,iconInfo1);
+        board testObject3 = new board(true,iconInfo2);
+        testObject1.createBoard(iconTypeInfo1);
+        testObject2.createBoard(iconTypeInfo1);
+        testObject3.createBoard(iconTypeInfo2);
+        testObject1.place(0,0);
+        testObject2.place(0,0);
+        testObject3.place(0,0);
+        System.out.println(testObject1.getWin());
+        System.out.println(testObject2.getWin());
+        System.out.println(testObject3.getWin());
+        assertEquals(testObject1.getWin(),1);
+        assertEquals(testObject2.getWin(), 0);
+        assertEquals(testObject3.getWin(),-1);
+    }
 
 }
