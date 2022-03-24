@@ -64,10 +64,14 @@ public class ui {
             int takeAmount = input.nextInt();
             System.out.println();
             if(board.canTake(iconType,takeAmount)){
-                board.take(iconType,takeAmount);
-                keepAsking = false;
-                displayBoard();
-                System.out.println("computer's turn");
+                if(takeAmount == 0){
+                    System.out.println("you must take icon");
+                }else{
+                    board.take(iconType,takeAmount);
+                    keepAsking = false;
+                    displayBoard();
+                    System.out.println("computer's turn");
+                }
             }else{
                 System.out.println("this icon does not exist or do not have enough amount");
             }

@@ -61,6 +61,7 @@ public class gameBoard {
 
     public int getLayerAmount() {return layerAmount;}
     public int getLayerLength(int y) {return board.get(y).length;}
+    public int[] getIconInfo(){return iconAmount;}
     public int getIconAmount(int iconType){
         int amount;
         if(iconType < iconAmount.length){
