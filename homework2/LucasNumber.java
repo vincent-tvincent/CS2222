@@ -1,17 +1,30 @@
 import java.util.ArrayList;
 public class LucasNumber {
-    private void runLucas(ArrayList<Integer> result, int firstNumber, int secondNumber, int restIteration){
-        if(restIteration > 0){ // need add this value
-            result.add(firstNumber + secondNumber); // add this value
-            runLucas(result,secondNumber,firstNumber + secondNumber, restIteration - 1); // add next value
+    ArrayList<Float> runTime;
+    float previousRunTime;
+    float currentRunTime;
+    public LucasNumber(){
+        runTime = new ArrayList<>();
+    }
+
+
+    public static int getLucasNumber(int n){
+        if(n == 0){
+            return 1;
+        }else if(n == 1){
+            return 2;
+        }else{
+            return getLucasNumber(n-1) + getLucasNumber(n-2);
         }
     }
 
-    public ArrayList<Integer> getLucasSiquence(int firstNumber, int secondNumber, int size){
-        ArrayList<Integer> result = new ArrayList<>();
-        result.add(firstNumber);
-        result.add(secondNumber);
-        runLucas(result,firstNumber,secondNumber,size - 2);
-        return result;
+    public static int mySequence(int n){
+        if(n == 0){
+            return 12;
+        }else if(n == 1){
+            return 25;
+        }else{
+            return mySequence(n-1) * mySequence(n-2) + 365;
+        }
     }
 }
