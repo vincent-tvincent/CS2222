@@ -44,7 +44,7 @@ public class hw2main {
         for(int i = 1; i < executionTimes.length; i++){
             System.out.print((executionTimes[i] - executionTimes[i - 1]) + " ");
             if(i%10 == 0 && i != 0) System.out.println();
-    }
+        }
         System.out.println();
 //        for(int i = 1; i < executionTimes.length; i++){
 //            System.out.print(i  + "," + (executionTimes[i] - executionTimes[i - 1])  + ", \"r*\", ");
@@ -52,7 +52,24 @@ public class hw2main {
         // this is also an exponiental growth program
         System.out.println();
 
-        //question3
+        //question3.1/3.2
+        System.out.println("question3.1 and question 3.2");
+        SubirachsSquire testObject2 = new SubirachsSquire();
+        Integer[][] testValue = {{1,14,14,4},{11,7,6,9},{8,10,10,5},{13,2,3,15}};
+        testObject2.fillWith(testValue);
+        ArrayList<int[]> output = testObject2.getAllCombinationsOfNElements(4);
 
+        int count = 0;
+        for(int[] value: output){
+            System.out.print("{ ");
+            for(int number: value) System.out.print(number + ",");
+            System.out.print(" } ");
+            if(count == 10){
+                System.out.println();
+                count = 0;
+            }else{
+                count++;
+            }
+        }
     }
 }

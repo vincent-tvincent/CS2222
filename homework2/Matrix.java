@@ -64,5 +64,6 @@ public class Matrix<T>{
     public T get(int row, int col){
         return matrixBody[col*rowLength + row];
     }
+    public T get(int bias) { return matrixBody[bias];}
 
 }
