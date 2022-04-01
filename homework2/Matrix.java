@@ -57,7 +57,7 @@ public class Matrix<T>{
         if(goHorizontal) nextCount++;
         else nextCount += rowLength;
 
-        if(nextCount > rowLength*colLength) nextBackToStart();
+        if(nextCount > rowLength*colLength - 1) nextBackToStart();
         return output;
     }
 
