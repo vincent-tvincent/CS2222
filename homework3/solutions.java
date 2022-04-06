@@ -5,6 +5,7 @@ public class solutions {
      * question 1: isPalindrome
      *
      * @param text the string going to be check
+     * @return boolean value represent if the string is a palindrome
      **/
     public boolean isPalindrome(String text) {
         boolean result = false;
@@ -41,7 +42,11 @@ public class solutions {
         return result;
     }
 
-    //question2.1
+    /**
+     * question 2.1
+     * @param source the list going to be check
+     * @return a ArrayList of int pairs in array type of the inversion pairs
+     */
     public ArrayList<int[]> easyinvertioncount(ArrayList<Integer> source){
         ArrayList<int[]> output = new ArrayList<>();
         for(int i = 0; i < source.size();i++){
@@ -63,29 +68,11 @@ public class solutions {
 //        return output;
 //    }
 
-//    private void quickinvertionCheck(ArrayList<int[]> result,ArrayList<Integer> source, int start, int end){
-//        if(start < end){
-//            int Left = start;
-//            int Right = start;
-//            int midPointValue = source.get(end);
-//            while(Right < end){
-//                int RightValue = source.get(Right);
-//                if(RightValue > midPointValue){
-//                    Left++;
-//                    result.add(new int[] {RightValue,midPointValue});
-//                    int tempLeft = source.get(Left);
-//                    source.set(Left,RightValue);
-//                    source.set(Right,tempLeft);
-//                }
-//                Right++;
-//            }
-//            source.add(Left + 1,midPointValue);
-//            source.remove(end + 1);
-//            quickinvertionCheck(result, source, Left + 1, end);
-//            quickinvertionCheck(result, source, start, Left - 1);
-//        }
-//    }
-
+    /**
+     * question 2.2
+     * @param source the list going to be check
+     * @return a ArrayList of int pairs in array type of the inversion pairs
+     */
     public ArrayList<int[]> quickinvertioncount(ArrayList<Integer> source){
         ArrayList<int[]> output = new ArrayList<>();
         ArrayList<Integer> out = quickinvertionCheck(source,output,0,source.size());
@@ -95,6 +82,7 @@ public class solutions {
         System.out.println();
         return output;
     }
+    //the helper function of question2.2, the implement of checking is here
     private ArrayList<Integer> quickinvertionCheck(ArrayList<Integer> source, ArrayList<int[]> output,int start, int end){
         ArrayList<Integer> sorted = new ArrayList<>();
         int split = (end - start)/2 + start;
@@ -133,4 +121,58 @@ public class solutions {
         return sorted;
     }
 
+    /** question 3.1 and bonus was implemented in grayCode file **/
+
+    /**
+     * question 3.2
+     * @param members all the members in the Klutzomaniac
+     * @param n request for the Join or Leave information till the nth order
+     * @return The String array record the changes on the set
+     */
+    public String[] getJoinOrLeaveSequence(String[] members, int n){
+        String[] output = new String[n];
+        grayCode graycode = new grayCode(members.length);
+        if(n > 0){
+            for(int code = 0; code < n; code++){
+                int[] previousStatus = graycode.getNthSubSetStatus(code);
+                int[] currentStatus = graycode.getNthSubSetStatus(code + 1);
+                for(int id = 0; id < members.length; id++){
+                    if(previousStatus[id] != currentStatus[id]) output[code] = members[id];
+                }
+            }
+        }else{
+            output = new String[] {"N/A"};
+        }
+        return output;
+    }
+
+    /**
+     * question3.3
+     *
+     * @return an arrayList of String array that represent all subSets of this Klutzomaniac
+     */
+
+    public ArrayList<String[]> getAllSubSets(String[] member){
+       ArrayList<String[]> output = new ArrayList<>();
+       grayCode code = new grayCode(member.length);
+       boolean KeepSearch = true;
+       while(KeepSearch){
+           String[] subSet = new String[0];
+           int[] status = code.getNextGrayCode();
+           boolean notFilled = false;
+           for(int id = 0; id < member.length; id++){
+               if(status[id] == 1){
+                   String[] temp = new String[subSet.length + 1];
+                   for(int i = 0; i < subSet.length; i++) temp[i] = subSet[i];
+                   temp[temp.length - 1] = member[id];
+                   subSet = temp;
+               }else{
+                   notFilled = true;
+               }
+           }
+           output.add(subSet);
+           KeepSearch = notFilled;
+       }
+       return output;
+    }
 }
