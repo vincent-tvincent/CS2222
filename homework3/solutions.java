@@ -126,52 +126,57 @@ public class solutions {
     /**
      * question 3.2
      * @param members all the members in the Klutzomaniac
-     * @param n request for the Join or Leave information till the nth order
+     * @param n request for the Join or Leave information of the nth order
      * @return The String array record the changes on the set
      */
-    public String[] getJoinOrLeaveSequence(String[] members, int n){
-        String[] output = new String[n];
-        grayCode graycode = new grayCode(members.length);
+    public String getCharacterChange(String[] members, int n){
+        grayCode code = new grayCode(members.length);
+        String output = "";
         if(n > 0){
-            for(int code = 0; code < n; code++){
-                int[] previousStatus = graycode.getNthSubSetStatus(code);
-                int[] currentStatus = graycode.getNthSubSetStatus(code + 1);
-                for(int id = 0; id < members.length; id++){
-                    if(previousStatus[id] != currentStatus[id]) output[code] = members[id];
+            int[] previousStatus = code.getNthSubSetStatus(n - 1);
+            int[] recentStatus = code.getNthSubSetStatus(n);
+            for(int id = 0; id < members.length; id ++){
+                switch(recentStatus[id] - previousStatus[id]){
+                    case 1:
+                        output = " " + members[id] + " join";
+                        break;
+                    case -1:
+                        output = " " + members[id] + " leave";
+                        break;
                 }
             }
         }else{
-            output = new String[] {"N/A"};
+            output = " Spotlight";
         }
         return output;
     }
 
     /**
      * question3.3
-     *
-     * @return an arrayList of String array that represent all subSets of this Klutzomaniac
+     * @param member all the members in the Klutzomaniac
+     * @return an arrayList of String array that represent each row of the routine table
      */
 
-    public ArrayList<String[]> getAllSubSets(String[] member){
-       ArrayList<String[]> output = new ArrayList<>();
+    public ArrayList<String> getTable(String[] member){
+       ArrayList<String> output = new ArrayList<>();
        grayCode code = new grayCode(member.length);
        boolean KeepSearch = true;
-       while(KeepSearch){
-           String[] subSet = new String[0];
-           int[] status = code.getNextGrayCode();
-           boolean notFilled = false;
+       for(int rotaine = 0; rotaine < 32; rotaine++){
+           String row = "" + rotaine + " ";
+           if(rotaine/10 == 0) row += " ";
+           int[] status = code.getNthSubSetStatus(rotaine);
            for(int id = 0; id < member.length; id++){
-               if(status[id] == 1){
-                   String[] temp = new String[subSet.length + 1];
-                   for(int i = 0; i < subSet.length; i++) temp[i] = subSet[i];
-                   temp[temp.length - 1] = member[id];
-                   subSet = temp;
-               }else{
-                   notFilled = true;
-               }
+               if(status[id] > 0) row += " " + member[id];
            }
-           output.add(subSet);
-           KeepSearch = notFilled;
+           while(row.length() < 40) row += " ";
+           if(rotaine == 1) {
+               row += " Axel Pedals";
+           }else if(rotaine == 31) {
+               row += " Enzo Crashes";
+           }else{
+               row += getCharacterChange(member,rotaine);
+           }
+           output.add(row);
        }
        return output;
     }

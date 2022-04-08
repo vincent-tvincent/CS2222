@@ -47,32 +47,12 @@ public class homework3main {
         Assumptions.assumeTrue(test2);
         Assumptions.assumeTrue(test3);
     }
-    @Test
-    public void testQuestion3(){
-        solutions testObject = new solutions();
-        String[] testMembers = {"Axel", "Boxo", "Crunchy", "Doofus", "Enzo"};
-        String[] result = testObject.getJoinOrLeaveSequence(testMembers,6);
-        String[] expected = {"Axel", "Boxo", "Axel", "Crunchy", "Axel", "Boxo"};
-        boolean check = true;
-        for(int i = 0; i < expected.length; i++){
-            System.out.println("result: " + result[i] + " expected: " + expected[i]);
-            if(!result[i].equals(expected[i])) check = false;
-        }
-        Assumptions.assumeTrue(check);
-    }
 
-    public static void question3_2demo(){
-        solutions test = new solutions();
-        ArrayList<String[]> testResult = test.getAllSubSets(new String[] {"Axel", "Boxo", "Crunchy", "Doofus", "Enzo"} );
-        for(String[] i: testResult){
-            for(String j: i){
-                System.out.print(j + " ");
-            }
-            System.out.println();
-        }
-    }
     public static void main(String args[]){
-        question3_2demo();
+        solutions test = new solutions();
+        String[] testList = new String[]{"Axel", "Boxo", "Crunchy", "Doofus", "Enzo"};
+        ArrayList<String> output = test.getTable(testList);
+        for(String row: output) System.out.println(row);
     }
 
 }
