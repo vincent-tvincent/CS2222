@@ -15,7 +15,6 @@ public class SubirachSquire {
     }
     //question 1
     public int getAllFourCombination(){
-        int totalSetAmount = 0;
         ArrayList<ArrayList<Integer>> output = new ArrayList<>();
         for(int pivit1 = 0; pivit1 < body.size(); pivit1++){
             for(int pivit2 = pivit1+1; pivit2 < body.size(); pivit2++){
@@ -28,14 +27,7 @@ public class SubirachSquire {
                 }
             }
         }
-        ArrayList<ArrayList<Integer>> filtRepeat = new ArrayList<>();
-        for(ArrayList<Integer> item: output){
-            if(!filtRepeat.contains(item)){
-                filtRepeat.add(item);
-            }
-        }
-        totalSetAmount = filtRepeat.size();
-        return totalSetAmount;
+        return output.size();
     }
 
     //question 2
@@ -53,18 +45,7 @@ public class SubirachSquire {
     public int getAllCombinationsBellowFour(){
         int totalSetNum = 0;
         for(int size = 1; size < 5; size++){
-            ArrayList<Integer> include = new ArrayList<>();
-            getAllPossibleSubsets(size,body.size(),include);
-            int bias = 0;
-            int currentSum = 0;
-            for(int i = 0; i < include.size(); i++){
-                if(include.get(i) == 1)currentSum += body.get(i-bias);
-                if(i != 0  & i % (body.size() - 1) == 0){
-                    bias += body.size() - 1;
-                    if(currentSum == sum) totalSetNum ++;
-                    currentSum = 0;
-                };
-            }
+            totalSetNum += getNSizeSumAmount(size,sum);
         }
         return totalSetNum;
     }
@@ -114,6 +95,25 @@ public class SubirachSquire {
         }
         return totalSetAmount;
     }
+
+    private int getNSizeSumAmount(int n, int sum){
+        int totalSetAmount = 0;
+        int fullSet = 0;
+        for(int power = 0; power < body.size(); power++) fullSet += Math.pow(2,power);
+        for(int set = 0; set < fullSet; set++){
+            int currentSum = 0;
+            boolean[] isInclude = binaryToSet(body.size(),set);
+            int setSize = 0;
+            for(boolean include: isInclude){
+                if(include) setSize++;
+            }
+            for(int i = 0; i < body.size() && setSize < n + 1; i++){
+                if(isInclude[i]) currentSum += body.get(i);
+            }
+            if(currentSum == sum) totalSetAmount ++;
+        }
+        return totalSetAmount;
+    }
     public int getAllSumAmount(){
         int totalSetAmount = 0;
         int max = 0;
@@ -125,7 +125,7 @@ public class SubirachSquire {
         body.nextBackToStart();
 
         for(int sum = 0; sum < max; sum++){
-            totalSetAmount += getSumAmount(sum);
+            totalSetAmount = Math.max(totalSetAmount,getSumAmount(sum));
         }
         return totalSetAmount;
     }
