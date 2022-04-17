@@ -70,14 +70,18 @@ public class solution{
 
     private static int pathTracker(int x, int y, int previousSum, Matrix<Integer> rooms, ArrayList<int[]> output){
         int sum = previousSum;
-        sum += rooms.get(x,y);
         int aheadGain = sum;
         int leftGain = sum;
         int rightGain = sum;
-        if(y + 1 < rooms.yLength()){
-            aheadGain = pathTracker(x,y + 1, sum, rooms, output);
-            if(x - 1 > -1) leftGain = pathTracker(x - 1, y + 1, sum, rooms, output);
-            if(x + 1 < rooms.xLength())  rightGain = pathTracker(x + 1, y + 1, sum, rooms, output);
+
+        sum += rooms.get(x,y); // add the achievement of this step
+        if(y + 1 < rooms.yLength()){ // if still have ways to go
+
+            aheadGain = pathTracker(x,y + 1, sum, rooms, output); // try going front
+            if(x - 1 > -1) leftGain = pathTracker(x - 1, y + 1, sum, rooms, output); // if possible, also try going left
+            if(x + 1 < rooms.xLength())  rightGain = pathTracker(x + 1, y + 1, sum, rooms, output); // if possible, also try going right
+
+            // analyze the result of the three trials
             sum = Math.max(aheadGain,Math.max(leftGain,rightGain));
             if(sum == aheadGain){
                 output.add(new int[] {x,y + 1});
