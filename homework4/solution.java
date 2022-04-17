@@ -1,4 +1,6 @@
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class solution{
     //question 3
@@ -30,9 +32,9 @@ public class solution{
                     equations.set(value,nextRow,currentValue - cancelValue);
                 }
             }
-            System.out.println("row: " + row);
-            System.out.println(equations.toString());
-            System.out.println();
+//            System.out.println("row: " + row);
+//            System.out.println(equations.toString());
+//            System.out.println();
         }
 
 
@@ -48,6 +50,47 @@ public class solution{
         }
         return solution;
     }
+
+    //question 2
+    public static ArrayList<int[]> getRightPath(Matrix<Integer> rooms){
+        ArrayList<int[]> output = new ArrayList();
+        int maxGain = 0;
+        //start from different points on the first Row
+        for(int startPoint = 0; startPoint < rooms.xLength(); startPoint++){
+            ArrayList<int[]> trackResult = new ArrayList();
+            trackResult.add(new int[] {startPoint, 0});
+            int gain = pathTracker(startPoint, 0, 0, rooms, output);
+            if(gain > maxGain){
+                maxGain = gain;
+                output = trackResult;
+            }
+        }
+        return output;
+    }
+
+    private static int pathTracker(int x, int y, int previousSum, Matrix<Integer> rooms, ArrayList<int[]> output){
+        int sum = previousSum;
+        sum += rooms.get(x,y);
+        int aheadGain = sum;
+        int leftGain = sum;
+        int rightGain = sum;
+        if(y + 1 < rooms.yLength()){
+            aheadGain = pathTracker(x,y + 1, sum, rooms, output);
+            if(x - 1 > -1) leftGain = pathTracker(x - 1, y + 1, sum, rooms, output);
+            if(x + 1 < rooms.xLength())  rightGain = pathTracker(x + 1, y + 1, sum, rooms, output);
+            sum = Math.max(aheadGain,Math.max(leftGain,rightGain));
+            if(sum == aheadGain){
+                output.add(new int[] {x,y + 1});
+            }else if(sum == leftGain){
+                output.add(new int[] {x - 1, y + 1});
+            }else if(sum == rightGain){
+                output.add(new int[] {x + 1, y + 1});
+            }
+        }
+        return sum;
+    }
+
 }
 
-//question 2
+
+

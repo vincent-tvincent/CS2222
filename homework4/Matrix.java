@@ -3,19 +3,19 @@
 public class Matrix<T>{
     private T[] matrixBody;
     private int nextCount;
-    private int rowLength;
-    private int colLength;
+    private int xLength;
+    private int yLength;
 
-    public Matrix(int row,int col){
-        matrixBody = (T[]) new Object[row*col];
-        rowLength = row;
-        colLength = col;
+    public Matrix(int xSize,int ySize){
+        matrixBody = (T[]) new Object[xSize*ySize];
+        xLength = xSize;
+        yLength = ySize;
     }
 
     public Matrix(){
         matrixBody = (T[]) new Object[0];
-        rowLength = 0;
-        colLength = 0;
+        xLength = 0;
+        yLength = 0;
     }
 
     public int size(){
@@ -27,34 +27,35 @@ public class Matrix<T>{
     }
 
     public void fillWith(T[][] value){
-        rowLength = value[0].length;
-        colLength = value.length;
-        matrixBody = (T[]) new Object[rowLength*colLength];
-        for(int col = 0; col < colLength; col++){
-            for(int row = 0; row < rowLength; row++){
-                matrixBody[col*rowLength + row] = value[col][row];
+        xLength = value[0].length;
+        yLength = value.length;
+        matrixBody = (T[]) new Object[xLength * yLength];
+        for(int col = 0; col < yLength; col++){
+            for(int row = 0; row < xLength; row++){
+                matrixBody[col* xLength + row] = value[col][row];
             }
         }
     }
 
     public void set(int row, int col,T value){
-        matrixBody[col*rowLength + row] = value;
+        matrixBody[col* xLength + row] = value;
     }
 
-    public void swap(int row1, int col1, int row2, int col2){
-        T temp = get(row1,col1);
-        set(row1,col1,get(row2,col2));
-        set(row2,col2,temp);
+    public void swap(int x1, int y1, int x2, int y2){
+        T temp = get(x1,y1);
+        set(x1,y1,get(x2,y2));
+        set(x2,y2,temp);
     }
 
-    public void swapCol(int row1, int row2){
-        for(int col = 0; col < colLength; col ++){
-            swap(row1,col,row2,col);
+    public void swapCol(int x1, int x2){
+        for(int y = 0; y < yLength; y ++){
+            swap(x1,y,x2,y);
         }
     }
-    public void swapRow(int col1, int col2){
-        for(int row = 0; row < rowLength; row ++){
-            swap(row,col1,row,col2);
+
+    public void swapRow(int y1, int y2){
+        for(int x = 0; x < xLength; x ++){
+            swap(x,y1,x,y2);
         }
     }
 
@@ -66,22 +67,24 @@ public class Matrix<T>{
         T output = matrixBody[nextCount];
 
         if(goHorizontal) nextCount++;
-        else nextCount += rowLength;
+        else nextCount += xLength;
 
-        if(nextCount > rowLength*colLength - 1) nextBackToStart();
+        if(nextCount > xLength * yLength - 1) nextBackToStart();
         return output;
     }
 
-    public T get(int row, int col){
-        return matrixBody[col*rowLength + row];
+    public T get(int x, int y){
+        return matrixBody[y* xLength + x];
     }
     public T get(int bias) { return matrixBody[bias];}
+    public int xLength(){return xLength;}
+    public int yLength(){return yLength;}
 
     public String toString(){
         String output = "";
         int count = 0;
         for(T value: matrixBody){
-            if(count == rowLength){
+            if(count == xLength){
                 output += "\n";
                 count = 0;
             }
