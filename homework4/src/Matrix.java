@@ -22,9 +22,7 @@ public class Matrix<T>{
         return matrixBody.length;
     }
 
-    public void fillWith(T value){
-        for(int i = 0; i < matrixBody.length; i++) matrixBody[i] = value;
-    }
+    public void fillWith(T value){ for(int i = 0; i < matrixBody.length; i++) matrixBody[i] = value; }
 
     public void fillWith(T[][] value){
         xLength = value[0].length;
@@ -37,9 +35,9 @@ public class Matrix<T>{
         }
     }
 
-    public void set(int row, int col,T value){
-        matrixBody[col* xLength + row] = value;
-    }
+    public void set(int row, int col,T value){ matrixBody[col* xLength + row] = value; }
+
+    public void set(int bias,T value){ matrixBody[bias] = value; }
 
     public void swap(int x1, int y1, int x2, int y2){
         T temp = get(x1,y1);

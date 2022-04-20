@@ -11,6 +11,7 @@ public class ui {
         enemy = new computerPlayer(board);
     }
 
+
     public void run(){
         System.out.println("game is ready to start :)");
         displayBoard();
