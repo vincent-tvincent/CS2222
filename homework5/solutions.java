@@ -28,6 +28,17 @@ public class solutions {
         }while(currentNode != -1);
         return path;
     }
+    private static int mapNode(String node,String[] map){
+        boolean keepSearch = true;
+        int result = -1;
+        for(int i = 0; i < map.length && keepSearch; i++){
+            if(map[i] == node){
+                result = i;
+                keepSearch = false;
+            }
+        }
+        return result;
+    }
 
     private static int[] dijkstraTrack(Matrix<Integer> connection, int start){
         int size = connection.xLength(); // nodes are 0 to size - 1
@@ -73,18 +84,6 @@ public class solutions {
             }
         }
         return min;
-    }
-
-    private static int mapNode(String node,String[] map){
-        boolean keepSearch = true;
-        int result = -1;
-        for(int i = 0; i < map.length && keepSearch; i++){
-            if(map[i] == node){
-                result = i;
-                keepSearch = false;
-            }
-        }
-        return result;
     }
 
 }
