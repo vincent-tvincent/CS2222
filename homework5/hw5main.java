@@ -39,7 +39,7 @@ public class hw5main {
             });
             ArrayList<String> result = solutions.dijkstra(testGraph, new String[] {"A", "J", "M", "R", "K", "S","I", "N","T", "D"},"A","D");
             System.out.println("the path is: ");
-            for(String node: result) System.out.printf("→ " + result);
+            System.out.println(result);
             System.out.println();
         }
     }

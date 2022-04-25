@@ -19,48 +19,60 @@ public class solutions {
 
     //question2
     public static ArrayList<String> dijkstra(Matrix<Integer> connection,String[] nodeMap, String start, String end){
-        Hashtable<Integer,Integer> result = dijkstraTrack(connection,mapNode(start,nodeMap));
+        int[] backTrackResult = dijkstraTrack(connection,mapNode(start,nodeMap));
         ArrayList<String> path = new ArrayList();
         int currentNode = mapNode(end,nodeMap);
         do{
             path.add(0,nodeMap[currentNode]);
-            currentNode = result.get(currentNode);
+            currentNode = backTrackResult[currentNode];
         }while(currentNode != -1);
-
         return path;
     }
 
-    private static Hashtable<Integer,Integer> dijkstraTrack(Matrix<Integer> connection, int start){
-        Hashtable<Integer,Integer> track = new Hashtable();// the shortest distance from the nodes to start node
-        Hashtable<Integer,Integer> backTrack = new Hashtable(); // the adjacency backtrack on the shortest path
-        ArrayList<Integer> checkQueue = new ArrayList();
+    private static int[] dijkstraTrack(Matrix<Integer> connection, int start){
         int size = connection.xLength(); // nodes are 0 to size - 1
+        int[] trackDistance = new int[size];// the shortest distance from the nodes to start node
+        int[] backTrack = new int[size]; // the adjacency backtrack on the shortest path
+        boolean[] exclude = new boolean[size]; // the nodes which already found the shortest path
+        ArrayList<Integer> checkQueue = new ArrayList();
         for(int node = 0; node < size; node++){
-            track.put(node,Integer.MAX_VALUE);
-            checkQueue.add(node);
+            trackDistance[node] = Integer.MAX_VALUE; // initialize the distance from each point as infinity
+            backTrack[node] = -1;
+            checkQueue.add(node); // add every node to the check queue
         }
-        track.replace(start,0);
-        backTrack.put(start, -1);
-        while(checkQueue.size() > 0){ // if every node checked
-            int fromNode = getMin(checkQueue);
-            checkQueue.remove(fromNode);
-            for(int toNode = 0; toNode < size; toNode++){ // check through adjacency matrix
-                if(connection.get(fromNode,toNode) < Integer.MAX_VALUE){ // if have connection
-                    int newDistance = track.get(fromNode) + connection.get(fromNode,toNode); // distance from the start node to the checking node
-                    if(newDistance < track.get(toNode)) {
-                        track.replace(toNode,newDistance);
 
-                        //update the back track information
-                        if(backTrack.contains(toNode)){
-                            backTrack.replace(toNode,fromNode);
-                        }else{
-                            backTrack.put(toNode,fromNode);
-                        }
+        trackDistance[start] = 0; // set the start point's self loop as distance of 0
+        //backTrack[start] = start; // the start point do not have back track
+        exclude[start] = true;
+        while(checkQueue.size() > 0){ // if every node checked
+            int fromNodeIndex = getMin(trackDistance,checkQueue);
+            int fromNode = checkQueue.get(fromNodeIndex);
+            checkQueue.remove(fromNodeIndex);
+            for(int toNode = 0; toNode < size; toNode++){ // check through adjacency matrix
+                if(connection.get(fromNode,toNode) < Integer.MAX_VALUE && !exclude[toNode]){ // if have connection and haven't found the shortest path
+                    int newDistance = trackDistance[fromNode] + connection.get(fromNode,toNode); // distance from the start node to the checking node
+                    if(newDistance < trackDistance[toNode]) {
+                        trackDistance[toNode] = newDistance;
+                        backTrack[toNode] = fromNode;
                     }
                 }
             }
+            exclude[fromNode] = true;
         }
         return backTrack;
+    }
+
+    private static int getMin(int[] trackDistance,ArrayList<Integer> checkQueue){
+        int min = -1;
+        int minValue = Integer.MAX_VALUE;
+        for(int nodeIndex = 0; nodeIndex < checkQueue.size(); nodeIndex++){
+            int node = checkQueue.get(nodeIndex);
+            if(trackDistance[node] < minValue){
+                min = nodeIndex;
+                minValue = trackDistance[node];
+            }
+        }
+        return min;
     }
 
     private static int mapNode(String node,String[] map){
@@ -73,18 +85,6 @@ public class solutions {
             }
         }
         return result;
-    }
-
-    private static int getMin(ArrayList<Integer> input){
-        int min = -1;
-        int minValue = Integer.MAX_VALUE;
-        for(int i = 0; i < input.size(); i++){
-            if(input.get(i) < minValue){
-                min = i;
-                minValue = input.get(i);
-            }
-        }
-        return min;
     }
 
 }
