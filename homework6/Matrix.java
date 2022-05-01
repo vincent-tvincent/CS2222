@@ -35,7 +35,7 @@ public class Matrix<T>{
         }
     }
 
-    public void set(int row, int col,T value){ matrixBody[col* xLength + row] = value; }
+    public void set(int x, int y,T value){ matrixBody[y* xLength + x] = value; }
 
     public void set(int bias,T value){ matrixBody[bias] = value; }
 
