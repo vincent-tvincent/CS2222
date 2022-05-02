@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 public class hw6main {
     //question1 test
     @Test
@@ -20,16 +22,23 @@ public class hw6main {
     }
     public static void main(String args[]){
         boolean question3 = false;
-        boolean question4 = false;
+        boolean question4 = true;
         if(question3){
-            int[] result = solutions.findNextSolution(8);
-            System.out.println("question3 \n the first set of legal positions is: ");
-            for(int position : result) System.out.print(position + " ");
-            System.out.println("");
+            System.out.println("question3");
+            for(int n = 4; n < 14; n++){
+                System.out.println("now the n value is: " + n);
+                int[] result = solutions.findFirstSolution(n);
+                System.out.println("the first set of legal positions is: ");
+                for(int position : result) System.out.print(position + " ");
+                System.out.println();
+            }
         }
         if(question4){
-
+            ArrayList<int[]> result = solutions.findAllSolution(4);
+            for(int[] positions: result){
+                for(int position: positions) System.out.print(position + " ");
+                System.out.println();
+            }
         }
-
     }
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class hw5main {
     public static void main(String[] args) throws IOException {
-        boolean question1 = false;
+        boolean question1 = true;
         boolean question2 = true;
 
         if(question1){
