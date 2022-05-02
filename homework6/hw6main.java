@@ -34,7 +34,7 @@ public class hw6main {
             }
         }
         if(question4){
-            ArrayList<int[]> result = solutions.findAllSolution(4);
+            ArrayList<int[]> result = solutions.findAllSolution(5);
             for(int[] positions: result){
                 for(int position: positions) System.out.print(position + " ");
                 System.out.println();

@@ -85,7 +85,7 @@ public class solutions {
        boolean keepCheck = true;
        while(keepCheck && targetRow > -1){
            int startCol = board[targetRow];
-           if(board[targetRow] > 0){// if not 0, the function is back tracking
+           if(startCol > 0){// if not 0, the function is back tracking
                // erase previous record
                setRelatedPosition(board2d,board[targetRow] - 1,targetRow,false);
                board[targetRow] = 0;
@@ -101,7 +101,6 @@ public class solutions {
            }
            if(keepCheck){
                board = nextPosition(targetRow - 1,n,board,board2d);
-               startCol = board[targetRow];
            }
        }
        return board;
