@@ -27,7 +27,12 @@ public class solutions {
             }
         }
     }
-
+    private static int firstZero(int[] board){
+        for(int i = 0; i < board.length; i++){
+            if(board[i] == 0) return i;
+        }
+        return board.length;
+    }
     private static boolean isEmptyArray(int[] array){
         boolean result = true;
         for(int i = 0; i < array.length && !result; i++){
@@ -35,92 +40,7 @@ public class solutions {
         }
         return result;
     }
-    //question1
-    public static boolean isLegalPosition(int[] board, int n){
-        boolean result = true;
-        int[][] board2d = new int[n][n];
-        setRelatedPosition(board2d,board[0] - 1,0,true);
-        for(int row = 1; row < n && result; row++){
-            int col = board[row] - 1;
-            if(col > -1){
-                result = board2d[row][col] < 1;
-                if(result) setRelatedPosition(board2d,board[row] - 1,row,true);
-            }
-        }
-        return result;
-    }
-    //question2
-    public static int[] nextLegalPosition(int[] board, int n){
-        int nextRow = 0;
-        while(board[nextRow] > 0) nextRow ++;
-        int[][] board2d = new int[n][n];
-        Boolean keepAdd = true;
-        for(int row = 0; row < board.length && keepAdd; row ++ ){
-            if(board[row] > 0){
-                setRelatedPosition(board2d,board[row] - 1,row,true);
-            }else{
-                keepAdd = false;
-            }
-        };
-        return nextPosition(nextRow,n,board,board2d);
-   }
-
-   private static int[] nextLegalPosition(int[] board, int n, int nextRow){
-       int[][] board2d = new int[n][n];
-       Boolean keepAdd = true;
-       for(int row = 0; row < board.length && keepAdd; row ++ ){
-           if(board[row] > 0){
-               setRelatedPosition(board2d,board[row] - 1,row,true);
-           }else{
-               keepAdd = false;
-           }
-       };
-       return nextPosition(nextRow,n,board,board2d);
-   }
-   private static int[] nextPosition(int targetRow, int n, int[] board, int[][] board2d){
-//       System.out.printf("position: ");
-//       for(int position: board) System.out.print(position);
-//       System.out.println(" target row: " + targetRow);
-//       System.out.println();
-       boolean keepCheck = true;
-       while(keepCheck && targetRow > -1){
-           int startCol = board[targetRow];
-           if(startCol > 0){// if not 0, the function is back tracking
-               // erase previous record
-               setRelatedPosition(board2d,board[targetRow] - 1,targetRow,false);
-               board[targetRow] = 0;
-           }
-           for(int col = startCol; col < n && keepCheck; col++){
-               boolean valid = board2d[targetRow][col] < 1;
-               if(valid){
-                   board[targetRow] = col + 1; // store this result
-                   //update the board
-                   setRelatedPosition(board2d,col,targetRow,true);
-               }
-               keepCheck = !valid;
-           }
-           if(keepCheck){
-               board = nextPosition(targetRow - 1,n,board,board2d);
-           }
-       }
-       return board;
-   }
-    //question3
-
-   public static int[] findNextSolution(int n, int[] CompleteBoard){
-        return nextLegalPosition(CompleteBoard,n,0);
-   }
-
-   public static int[] findFirstSolution(int n){
-       int[] board = new int[n];
-       int[][] board2d = new int[n][n];
-       for(int targetRow = 0; targetRow < n; targetRow ++){
-           board = nextPosition(targetRow,n,board,board2d);
-       }
-       return board;
-   }
-
-   private static boolean ifNotInclude(ArrayList<int[]> set, int[] array){
+    private static boolean ifNotInclude(ArrayList<int[]> set, int[] array){
         boolean result = true;
         for(int subSet = 0; subSet < set.size() && result; subSet++) {
             boolean isSame = true;
@@ -130,8 +50,8 @@ public class solutions {
             result = !isSame;
         }
         return result;
-   }
-   private static boolean stillHaveSpace(int[][] board){
+    }
+    private static boolean stillHaveSpace(int[][] board){
         boolean result = true;
         for(int i = 0; i < board.length && result; i++){
             boolean haveZero = false;
@@ -139,18 +59,50 @@ public class solutions {
             result = haveZero;
         }
         return result;
-   }
-   public static ArrayList<int[]> findAllSolution(int n){
-        ArrayList<int[]> results = new ArrayList<>();
-        results.add(findFirstSolution(n));
-        for(int checkRow = n - 1; checkRow > -1; checkRow--){
-            for(int iterate = 0; iterate < n; iterate++){
-                int[] nextResult = results.get(results.size() - 1).clone();// keep going from previous result
-                for(int currentRow = checkRow; currentRow < n; currentRow++) nextResult  = nextLegalPosition(nextResult,n,checkRow);
-                if(ifNotInclude(results,nextResult)) results.add(nextResult); // if vaild
-            }
-        }
-        return results;
-   }
+    }
 
+    // question 1
+    public static boolean isLegalPosition(int[] board, int n){
+        boolean result = true;
+        int[][] board2d = new int[n][n];
+        for(int row = 0; row < n && result && board[row] > 0; row++){
+            if(row > 0){
+                int col = board[row] - 1;
+                result = board2d[row][col] < 1;
+            }
+            if(result) setRelatedPosition(board2d,board[row] - 1,row,true);
+        }
+        return result;
+    }
+
+    // question 2
+    public static int[] nextLegalPosition(int[] board, int n){
+        int nextRow = firstZero(board);// go to a new line
+        if(isLegalPosition(board,n)){ // the position is already legal
+            if(nextRow < n) board[nextRow] = 1; // new line start from 1
+        }
+        board = fixIllegalPosition(board,n,nextRow); // make it legal
+        return board;
+    }
+
+    private static int[] fixIllegalPosition(int[] board, int n,int targetRow){
+        while(!isLegalPosition(board,n)){ // illegal position
+            if(board[targetRow] == n){
+                board[targetRow] = 0; //should change previous line
+                board[targetRow - 1] ++;
+            }else{
+                board[targetRow]++; //try nest position
+            }
+            board = fixIllegalPosition(board,n,targetRow - 1);
+        }
+        return board;
+    }
+
+    public static int[] findFirstSolution(int n){
+        int[] board = new int[n];
+        for(int iterate = 0; iterate < n; iterate++){
+            board = nextLegalPosition(board,n);
+        }
+        return board;
+    }
 }

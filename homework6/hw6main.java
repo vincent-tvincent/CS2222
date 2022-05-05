@@ -21,8 +21,8 @@ public class hw6main {
         Assumptions.assumeTrue(solutions.isLegalPosition(result,8));
     }
     public static void main(String args[]){
-        boolean question3 = false;
-        boolean question4 = true;
+        boolean question3 = true;
+        boolean question4 = false;
         if(question3){
             System.out.println("question3");
             for(int n = 4; n < 14; n++){
@@ -34,11 +34,11 @@ public class hw6main {
             }
         }
         if(question4){
-            ArrayList<int[]> result = solutions.findAllSolution(5);
-            for(int[] positions: result){
-                for(int position: positions) System.out.print(position + " ");
-                System.out.println();
-            }
+//            ArrayList<int[]> result = solutions.findAllSolution(5);
+//            for(int[] positions: result){
+//                for(int position: positions) System.out.print(position + " ");
+//                System.out.println();
+//            }
         }
     }
 }
